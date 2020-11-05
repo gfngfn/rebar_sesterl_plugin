@@ -15,12 +15,13 @@ init(State) ->
     Provider =
         providers:create([
             {name, ?PROVIDER},
+            {namespace, sesterl},
             {module, ?MODULE},
             {deps, ?DEPS},
             {bare, true},
             {short_desc, "Build Sesterl packages with rebar3"},
             {desc, "Build Sesterl packages with rebar3"},
-            {example, "rebar3 compile"}
+            {example, "rebar3 sesterl compile"}
         ]),
     {ok, rebar_state:add_provider(State, Provider)}.
 
