@@ -7,7 +7,7 @@
     format_error/1]).
 
 -define(PROVIDER, compile).
--define(DEPS, [lock]).
+-define(DEPS, [app_discovery]).
 
 -spec init(rebar_state:t()) -> {ok, rebar_state:t()}.
 init(State) ->
