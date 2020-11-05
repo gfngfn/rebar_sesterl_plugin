@@ -1,0 +1,12 @@
+{application, rebar_sesterl, [
+  {description, "Build Sesterl packages with rebar3"},
+  {licenses, ["MIT"]},
+  {vsn, "0.0.1"},
+  {applications, [
+    kernel,
+    stdlib
+  ]},
+  {registered, []},
+  {env, []},
+  {modules, []}
+]}.
