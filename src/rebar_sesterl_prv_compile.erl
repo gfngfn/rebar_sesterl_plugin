@@ -11,6 +11,7 @@
 
 -spec init(rebar_state:t()) -> {ok, rebar_state:t()}.
 init(State) ->
+    io:format("DEBUG L('o' )J ~p:init~n", [?MODULE]),
     Provider =
         providers:create([
             {name, ?PROVIDER},
@@ -25,6 +26,7 @@ init(State) ->
 
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
+    io:format("DEBUG L('o' )J ~p:do~n", [?MODULE]),
     case rebar_utils:sh("sesterl ./ -o _generated/", [use_stdout, return_on_error]) of
         {ok, _} -> rebar_prv_compile:do(State);
         _       -> {error, "Failed to compile Sesterl package(s)"}
