@@ -36,7 +36,7 @@ do(State) ->
 
         {ok, Settings} ->
             #rebar_sesterl_settings{output_dir = OutputDir} = Settings,
-            CommandLine = lists:flatten(io_lib:format("sesterl ./ -o ~s", [OutputDir])),
+            CommandLine = lists:flatten(io_lib:format("sesterl build ./ -o ~s", [OutputDir])),
             rebar_api:info("Compiling Sesterl programs (command: ~p) ...", [CommandLine]),
             case rebar_utils:sh(CommandLine, [use_stdout, return_on_error]) of
                 {ok, _} -> rebar_prv_compile:do(State);
