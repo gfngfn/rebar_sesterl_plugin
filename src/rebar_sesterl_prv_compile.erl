@@ -34,12 +34,7 @@ do(State) ->
     Deps = rebar_state:all_deps(State),
     lists:foreach(
         fun(Dep) ->
-            Name     = rebar_app_info:name(Dep),
-            Dir      = rebar_app_info:dir(Dep),
-            FetchDir = rebar_app_info:fetch_dir(Dep),
-            OutDir   = rebar_app_info:out_dir(Dep),
-            rebar_api:info("Deps: ~p (fetch_dir: ~p, dir: ~p, out_dir: ~p) ~p",
-                [Name, FetchDir, Dir, OutDir, Dep])
+            rebar_api:info("Deps: ~p", [Dep])
         end,
         Deps),
     case get_settings_from_config(State) of
