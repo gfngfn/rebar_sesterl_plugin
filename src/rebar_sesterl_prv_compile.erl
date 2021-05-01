@@ -30,6 +30,18 @@ init(State) ->
 
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
+    %% Deps :: [rebar_app_info.t()]
+    Deps = rebar_state:all_deps(State),
+    lists:foreach(
+        fun(Dep) ->
+            Name     = rebar_app_info:name(Dep),
+            Dir      = rebar_app_info:dir(Dep),
+            FetchDir = rebar_app_info:fetch_dir(Dep),
+            OutDir   = rebar_app_info:out_dir(Dep),
+            rebar_api:info("Deps: ~p (fetch_dir: ~p, dir: ~p, out_dir: ~p) ~p",
+                [Name, FetchDir, Dir, OutDir, Dep])
+        end,
+        Deps),
     case get_settings_from_config(State) of
         {error, _} = Err ->
             Err;
