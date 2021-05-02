@@ -52,7 +52,7 @@ do(State) ->
         lists:append(
             lists:map(
                 fun({Name, Dir}) ->
-                    " -p " ++ Name ++ ":" ++ Dir
+                    " -p " ++ erlang:binary_to_list(Name) ++ ":" ++ Dir
                 end,
                 DepDirs1)),
     case get_settings_from_config(State) of
