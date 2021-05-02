@@ -33,28 +33,31 @@ init(State) ->
 do(State) ->
     %% Deps :: [rebar_app_info.t()]
     Deps = rebar_state:all_deps(State),
-    DepDirs0 =
+    %% DepDirs :: [{string(), string()}]
+    DepDirs =
         lists:map(
             fun(Dep) ->
-                Name = rebar_app_info:name(Dep),
+                NameBin = rebar_app_info:name(Dep),
+                NameStr = erlang:binary_to_list(NameBin),
                 Dir = rebar_app_info:dir(Dep),
-                rebar_api:info("Deps: ~p (at: ~p)", [Name, Dir]),
-                {Name, Dir}
+                case filelib:is_regular(Dir ++ "/" ++ ?CONFIG_FILE_NAME) of
+                    true  -> {true, {NameStr, Dir}};
+                    false -> false
+                end
             end,
             Deps),
-    DepDirs1 =
-        lists:filter(
-            fun({_, Dir}) ->
-                filelib:is_regular(Dir ++ "/" ++ ?CONFIG_FILE_NAME)
-            end,
-            DepDirs0),
+    lists:foreach(
+        fun({NameStr, Dir}) ->
+            rebar_api:info("Sesterl deps: ~s (at: ~s)", [NameStr, Dir])
+        end,
+        DepDirs),
     ExternalArg =
         lists:append(
             lists:map(
-                fun({Name, Dir}) ->
-                    " -p " ++ erlang:binary_to_list(Name) ++ ":" ++ Dir
+                fun({NameStr, Dir}) ->
+                    " -p " ++ NameStr ++ ":" ++ Dir
                 end,
-                DepDirs1)),
+                DepDirs)),
     case get_settings_from_config(State) of
         {error, _} = Err ->
             Err;
