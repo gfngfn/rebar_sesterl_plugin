@@ -8,6 +8,7 @@
 
 -define(PROVIDER, compile).
 -define(DEPS, [{default, lock}]).
+-define(CONFIG_FILE_NAME, "package.yaml").
 
 -record(rebar_sesterl_settings, {
     output_dir :: string()
@@ -32,18 +33,35 @@ init(State) ->
 do(State) ->
     %% Deps :: [rebar_app_info.t()]
     Deps = rebar_state:all_deps(State),
-    lists:foreach(
-        fun(Dep) ->
-            rebar_api:info("Deps: ~p", [Dep])
-        end,
-        Deps),
+    DepDirs0 =
+        lists:map(
+            fun(Dep) ->
+                Name = rebar_app_info:name(Dep),
+                Dir = rebar_app_info:dir(Dep),
+                rebar_api:info("Deps: ~p (at: ~p)", [Name, Dir]),
+                {Name, Dir}
+            end,
+            Deps),
+    DepDirs1 =
+        lists:filter(
+            fun({_, Dir}) ->
+                filelib:is_regular(Dir ++ "/" ++ ?CONFIG_FILE_NAME)
+            end,
+            DepDirs0),
+    ExternalArg =
+        lists:append(
+            lists:map(
+                fun({Name, Dir}) ->
+                    " -p " ++ Name ++ ":" ++ Dir
+                end,
+                DepDirs1)),
     case get_settings_from_config(State) of
         {error, _} = Err ->
             Err;
 
         {ok, Settings} ->
             #rebar_sesterl_settings{output_dir = OutputDir} = Settings,
-            CommandLine = lists:flatten(io_lib:format("sesterl build ./ -o ~s", [OutputDir])),
+            CommandLine = lists:flatten(io_lib:format("sesterl build ./ -o ~s~s", [OutputDir, ExternalArg])),
             rebar_api:info("Compiling Sesterl programs (command: ~p) ...", [CommandLine]),
             case rebar_utils:sh(CommandLine, [use_stdout, return_on_error]) of
                 {ok, _} -> rebar_prv_compile:do(State);
