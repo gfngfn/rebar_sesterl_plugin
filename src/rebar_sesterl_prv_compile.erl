@@ -35,7 +35,7 @@ do(State) ->
     Deps = rebar_state:all_deps(State),
     %% DepDirs :: [{string(), string()}]
     DepDirs =
-        lists:map(
+        lists:filtermap(
             fun(Dep) ->
                 NameBin = rebar_app_info:name(Dep),
                 NameStr = erlang:binary_to_list(NameBin),
