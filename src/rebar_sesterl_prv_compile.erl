@@ -7,7 +7,7 @@
     format_error/1]).
 
 -define(PROVIDER, compile).
--define(DEPS, [{test, lock}]).
+-define(DEPS, [lock]).
 -define(CONFIG_FILE_NAME, "package.yaml").
 
 -record(rebar_sesterl_settings, {
@@ -25,7 +25,8 @@ init(State) ->
             {bare, true},
             {short_desc, "Build Sesterl packages with rebar3"},
             {desc, "Build Sesterl packages with rebar3"},
-            {example, "rebar3 sesterl compile"}
+            {example, "rebar3 sesterl compile"},
+            {profiles, [test]}
         ]),
     {ok, rebar_state:add_provider(State, Provider)}.
 
