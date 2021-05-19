@@ -7,7 +7,7 @@
     format_error/1]).
 
 -define(PROVIDER, compile).
--define(DEPS, [{default, lock}, {test, lock}]).
+-define(DEPS, [{test, lock}]).
 -define(CONFIG_FILE_NAME, "package.yaml").
 
 -record(rebar_sesterl_settings, {
