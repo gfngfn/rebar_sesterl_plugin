@@ -28,3 +28,9 @@
    ```
 
    Then, by using `./package.yaml`, Sesterl generates Erlang code in `./_generated`, before `rebar3` compiles the resulting Erlang code.
+
+   You can also compile and run tests by:
+
+   ```console
+   $ rebar3 sesterl test
+   ```
