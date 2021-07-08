@@ -1,5 +1,5 @@
 
-# `rebar_sesterl`
+# `rebar_sesterl`: A Rebar3 plugin for building Sesterl programs
 
 ## How to use
 
