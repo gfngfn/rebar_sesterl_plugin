@@ -1,4 +1,4 @@
--module(rebar_sesterl_prv_compile).
+-module(rebar_sesterl_prv_test).
 
 -behaviour(provider).
 
@@ -14,7 +14,7 @@
 %%==============================================================================================
 %% Macros & Types
 %%==============================================================================================
--define(PROVIDER, compile).
+-define(PROVIDER, test).
 -define(DEPS, [{default, lock}]).
 
 %%==============================================================================================
@@ -29,9 +29,9 @@ init(State) ->
             {module, ?MODULE},
             {deps, ?DEPS},
             {bare, true},
-            {short_desc, "Build Sesterl packages with Rebar3"},
-            {desc, "Build Sesterl packages with Rebar3"},
-            {example, "rebar3 sesterl compile"},
+            {short_desc, "Build Sesterl packages and run tests with Rebar3"},
+            {desc, "Build Sesterl packages and run tests with Rebar3"},
+            {example, "rebar3 sesterl test"},
             {profiles, [test]}
         ]),
     {ok, rebar_state:add_provider(State, Provider)}.
@@ -39,10 +39,10 @@ init(State) ->
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
     case rebar_sesterl_common:compile(State) of
-        ok -> rebar_prv_compile:do(State);
+        ok -> rebar_prv_eunit:do(State);
         _  -> {error, "Failed to compile Sesterl package(s)"}
     end.
 
 -spec format_error(Reason :: term()) -> iolist().
 format_error(Reason) ->
-    rebar_prv_compile:format_error(Reason).
+    rebar_prv_eunit:format_error(Reason).
