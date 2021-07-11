@@ -10,7 +10,8 @@
 %%==============================================================================================
 %% Macros & Types
 %%==============================================================================================
--define(CONFIG_FILE_NAME, "package.yaml").
+-define(CONFIG_FILE_NAME, "sesterl.yaml").
+-define(OLD_CONFIG_FILE_NAME, "package.yaml").
 
 %%==============================================================================================
 %% Exported Functions
@@ -28,7 +29,11 @@ compile(State) ->
                 Dir = rebar_app_info:dir(Dep),
                 case filelib:is_regular(Dir ++ "/" ++ ?CONFIG_FILE_NAME) of
                     true  -> {true, {NameStr, Dir}};
-                    false -> false
+                    false ->
+                    case filelib:is_regular(Dir ++ "/" ++ ?OLD_CONFIG_FILE_NAME) of
+                        true  -> {true, {NameStr, Dir}};
+                        false -> false
+                    end
                 end
             end,
             Deps),

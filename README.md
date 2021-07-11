@@ -3,7 +3,7 @@
 
 ## How to use
 
-1. Generate `./rebar.config` from `./package.yaml` by Sesterl:
+1. Generate `./rebar.config` from `./sesterl.yaml` by Sesterl:
 
    ```console
    $ sesterl config ./
@@ -27,7 +27,7 @@
    $ rebar3 sesterl compile
    ```
 
-   Then, by using `./package.yaml`, Sesterl generates Erlang code in `./_generated`, before `rebar3` compiles the resulting Erlang code.
+   Then, by using `./sesterl.yaml`, Sesterl generates Erlang code in `./_generated`, before `rebar3` compiles the resulting Erlang code.
 
    You can also compile and run tests by:
 
